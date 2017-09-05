@@ -18,7 +18,10 @@ INT1=eth1 # first external interface
 
 INT2=eth2 # second external interface
 
-LOG_TIME=`date +%b' '%d' '%T`
+#This will balance the routes over both providers. The weight parameters can be tweaked to favor one provider over the other.
+WEIGHT1=1 # first provider weight
+
+WEIGHT2=1 # second provider weight
 
 DEFROUTE=`ip route |grep nexthop |cut -d " " -f6|tr -d "\n"`
 
@@ -82,7 +85,7 @@ if [ "$DEFROUTE" != "$INT1$INT2" ]; then
 
 ip route del default
 
-ip route add default scope global nexthop via $ONE_GATEWAY dev $INT1 weight 1 nexthop via $SEC_GATEWAY dev $INT2 weight 1
+ip route add default scope global nexthop via $ONE_GATEWAY dev $INT1 weight $WEIGHT1 nexthop via $SEC_GATEWAY dev $INT2 weight $WEIGHT2
 
 echo "CHANGE EQ ROUTE"
 
