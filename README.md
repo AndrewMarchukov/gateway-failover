@@ -1,21 +1,11 @@
 2 providers on the same gateway load balancing* and failover
-
-Создаем скрипт который будет пинговать каждые 5 секунд популярные ресурсы в интернете и в случае недоступности этих ресурсов переключать на одного из провайдеров и также проводить балансировку
-
+Create script which will ping every 5 second popular resources on the Internet
 /usr/local/bin/eq-route.sh
 
-Не забываем сделать файл исполняемым  chmod +x /usr/local/bin/eq-route.sh
+Make it executable: chmod +x /usr/local/bin/eq-route.sh
 
-Создаем демон 
-/etc/systemd/system/eqroute-failover.service
-
-
-Добавляем в автозагрузку
-
-systemctl enable eqroute-failover.service
-
-Стартуем сервис
-
-systemctl start eqroute-failover.service
+Create daemon: /etc/systemd/system/eqroute-failover.service
+Add autostart: systemctl enable eqroute-failover.service
+Start daemon: systemctl start eqroute-failover.service
 
 *Note that balancing will not be perfect, as it is route based, and routes are cached. This means that routes to often-used sites will always be over the same provider.
