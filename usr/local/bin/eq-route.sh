@@ -1,4 +1,9 @@
 #!/bin/bash
+#2 providers on the same gateway load balancing* and failover
+#Create script which will ping every 5 second popular resources on the Internet:
+#/usr/local/bin/eq-route.sh
+#Make it executable: chmod +x /usr/local/bin/eq-route.sh
+#*Note that balancing will not be perfect, as it is route based, and routes are cached. This means that routes to often-used sites will always be over the same provider.
 
 while sleep 5
 
@@ -8,15 +13,17 @@ ONE_GATEWAY="1.1.1.1"   # Default Gateway
 
 SEC_GATEWAY="2.2.2.2"   # Backup Gateway
 
-RMT_IP_1="77.88.8.8"     # first remote ip
+RMT_IP_1="77.88.8.8"    # First remote ping ip
 
-RMT_IP_2="8.8.4.4"       # second remote ip
+RMT_IP_2="8.8.4.4"      # Second remote ping ip
 
 PING_TIMEOUT="1"        # Ping timeout in seconds
 
-INT1=eth1 # first external interface
+FAILOVER_PAUSE="1800"   # Wait 30 minutes after failover
 
-INT2=eth2 # second external interface
+INT1=eth1 # name first external interface
+
+INT2=eth2 # name second external interface
 
 #This will balance the routes over both providers. The weight parameters can be tweaked to favor one provider over the other.
 WEIGHT1=1 # first provider weight
@@ -101,7 +108,7 @@ ip route add default via $ONE_GATEWAY
 
 echo "CHANGE $ONE_GATEWAY"
 
-sleep 1800 
+sleep $FAILOVER_PAUSE
 
 elif [[ ( "$PING_3" == "0" && "$DIFROUTE" != "$INT2" ) || ( "$PING_4" == "0" && "$DIFROUTE" != "$INT2" ) ]]
 
@@ -113,7 +120,7 @@ ip route add default via $SEC_GATEWAY
 
 echo "CHANGE $SEC_GATEWAY"
 
-sleep 1800 
+sleep $FAILOVER_PAUSE
 
 fi
 
