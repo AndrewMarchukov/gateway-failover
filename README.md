@@ -1,4 +1,5 @@
 2 providers on the same gateway load balancing* and failover
+
 Create script which will ping every 5 second popular resources on the Internet:
 
 /usr/local/bin/eq-route.sh
