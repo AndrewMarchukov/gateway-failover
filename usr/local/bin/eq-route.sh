@@ -11,7 +11,7 @@ do
 
 ONE_GATEWAY="1.1.1.1"   # Default Gateway
 
-SEC_GATEWAY="2.2.2.2"   # Backup Gateway
+SEC_GATEWAY="2.2.2.2"   # Backup Gateway, example pppoe SEC_GATEWAY=$(ifconfig ppp0 | awk '/destination/ { print $6 }')
 
 RMT_IP_1="77.88.8.8"    # First remote ping ip
 
@@ -30,7 +30,7 @@ WEIGHT1=1 # first provider weight
 
 WEIGHT2=1 # second provider weight
 
-DEFROUTE=`ip route |grep nexthop |cut -d " " -f6|tr -d "\n"`
+DEFROUTE=`ip route |grep nexthop |cut -d " " -f5|tr -d "\n"`
 
 DIFROUTE=`ip route |grep default| cut -d ' ' -f5`
 
